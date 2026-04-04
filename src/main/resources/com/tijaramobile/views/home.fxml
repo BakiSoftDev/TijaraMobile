@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.tijaramobile.controller.HomeController"
+      spacing="8" style="-fx-background-color:#f0f4f8;" fillWidth="true">
+    <padding><Insets top="10" left="10" right="10" bottom="10"/></padding>
+
+    <Label text="%nav.home" style="-fx-font-size:16px;-fx-font-weight:bold;-fx-text-fill:#2c3e50;"/>
+    <Label text="%home.stats.title" style="-fx-text-fill:#6c757d;-fx-font-size:11px;"/>
+
+    <HBox spacing="8" fillHeight="true">
+        <VBox styleClass="quick-stat-card" HBox.hgrow="ALWAYS" alignment="CENTER" spacing="2">
+            <padding><Insets top="8" bottom="8" left="4" right="4"/></padding>
+            <ImageView fitHeight="20" fitWidth="20"><image><Image url="@../../../Img/order.png"/></image></ImageView>
+            <Label fx:id="lblTotalCmds" text="0" styleClass="stat-value" style="-fx-font-size:16px;"/>
+            <Label text="%home.stats.orders" styleClass="stat-label" style="-fx-font-size:10px;"/>
+        </VBox>
+        <VBox styleClass="quick-stat-card" HBox.hgrow="ALWAYS" alignment="CENTER" spacing="2">
+            <padding><Insets top="8" bottom="8" left="4" right="4"/></padding>
+            <ImageView fitHeight="20" fitWidth="20"><image><Image url="@../../../Img/income.png"/></image></ImageView>
+            <Label fx:id="lblTotalRevenu" text="0.00" styleClass="stat-value" style="-fx-font-size:14px;"/>
+            <Label text="%home.stats.income" styleClass="stat-label" style="-fx-font-size:10px;"/>
+        </VBox>
+    </HBox>
+
+    <HBox spacing="8" fillHeight="true">
+        <VBox style="-fx-background-color:white;-fx-background-radius:8;-fx-border-radius:8;-fx-border-color:#22c55e;-fx-border-width:1;-fx-effect:dropshadow(gaussian,rgba(0,0,0,0.06),4,0,0,1);" HBox.hgrow="ALWAYS" alignment="CENTER" spacing="2">
+            <padding><Insets top="8" bottom="8" left="4" right="4"/></padding>
+            <ImageView fitHeight="20" fitWidth="20"><image><Image url="@../../../Img/check.png"/></image></ImageView>
+            <Label fx:id="lblTotalPaye" text="0.00" style="-fx-font-size:14px;-fx-font-weight:bold;-fx-text-fill:#22c55e;"/>
+            <Label text="%home.stats.income" styleClass="stat-label" style="-fx-font-size:10px;"/>
+        </VBox>
+        <VBox style="-fx-background-color:white;-fx-background-radius:8;-fx-border-radius:8;-fx-border-color:#e74c3c;-fx-border-width:1;-fx-effect:dropshadow(gaussian,rgba(0,0,0,0.06),4,0,0,1);" HBox.hgrow="ALWAYS" alignment="CENTER" spacing="2">
+            <padding><Insets top="8" bottom="8" left="4" right="4"/></padding>
+            <ImageView fitHeight="20" fitWidth="20"><image><Image url="@../../../Img/warning (1).png"/></image></ImageView>
+            <Label fx:id="lblTotalImpaye" text="0.00" style="-fx-font-size:14px;-fx-font-weight:bold;-fx-text-fill:#e74c3c;"/>
+            <Label text="%home.stats.unpaid" styleClass="stat-label" style="-fx-font-size:10px;"/>
+        </VBox>
+    </HBox>
+
+    <Label text="%home.stats.general" style="-fx-font-size:14px;-fx-font-weight:bold;-fx-text-fill:#2c3e50;">
+        <VBox.margin><Insets top="6"/></VBox.margin>
+    </Label>
+
+    <HBox spacing="8">
+        <VBox styleClass="quick-stat-card" HBox.hgrow="ALWAYS" alignment="CENTER" spacing="2">
+            <padding><Insets top="8" bottom="8" left="4" right="4"/></padding>
+            <ImageView fitHeight="18" fitWidth="18"><image><Image url="@../../../Img/clients.png"/></image></ImageView>
+            <Label fx:id="lblTotalClients" text="0" style="-fx-font-size:14px;-fx-font-weight:bold;-fx-text-fill:#3498db;"/>
+            <Label text="Clients" styleClass="stat-label" style="-fx-font-size:9px;"/>
+        </VBox>
+        <VBox styleClass="quick-stat-card" HBox.hgrow="ALWAYS" alignment="CENTER" spacing="2">
+            <padding><Insets top="8" bottom="8" left="4" right="4"/></padding>
+            <ImageView fitHeight="18" fitWidth="18"><image><Image url="@../../../Img/supplier.png"/></image></ImageView>
+            <Label fx:id="lblTotalFournisseurs" text="0" style="-fx-font-size:14px;-fx-font-weight:bold;-fx-text-fill:#f39c12;"/>
+            <Label text="Fournis" styleClass="stat-label" style="-fx-font-size:9px;"/>
+        </VBox>
+        <VBox styleClass="quick-stat-card" HBox.hgrow="ALWAYS" alignment="CENTER" spacing="2">
+            <padding><Insets top="8" bottom="8" left="4" right="4"/></padding>
+            <ImageView fitHeight="18" fitWidth="18"><image><Image url="@../../../Img/boxes.png"/></image></ImageView>
+            <Label fx:id="lblTotalProduits" text="0" style="-fx-font-size:14px;-fx-font-weight:bold;-fx-text-fill:#8e44ad;"/>
+            <Label text="Produits" styleClass="stat-label" style="-fx-font-size:9px;"/>
+        </VBox>
+    </HBox>
+
+</VBox>

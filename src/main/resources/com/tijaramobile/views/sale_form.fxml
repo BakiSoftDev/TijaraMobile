@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane fitToWidth="true" style="-fx-background-color:transparent; -fx-background: #f0f4f8;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tijaramobile.controller.SaleFormController">
+<VBox stylesheets="@../../../Img/styles.css"
+      spacing="10" style="-fx-background-color:#f0f4f8;">
+    <padding><Insets top="12" left="12" right="12" bottom="12"/></padding>
+
+    <Label fx:id="lblTitle" text="%sale.title" style="-fx-font-size:16px;-fx-font-weight:bold;-fx-text-fill:#2c3e50;"/>
+
+    <VBox spacing="8" styleClass="login-container">
+        <padding><Insets top="10" left="10" right="10" bottom="10"/></padding>
+        <HBox spacing="10">
+            <VBox HBox.hgrow="ALWAYS" spacing="4">
+                <Label text="%sale.num" style="-fx-text-fill:#555;-fx-font-size:11px;"/>
+                <TextField fx:id="numField" promptText="VT-001" styleClass="text-field"/>
+            </VBox>
+            <VBox HBox.hgrow="ALWAYS" spacing="4">
+                <Label text="%sale.paye" style="-fx-text-fill:#555;-fx-font-size:11px;"/>
+                <TextField fx:id="payeField" promptText="0.00" styleClass="text-field"/>
+            </VBox>
+        </HBox>
+        <Label text="%sale.client" style="-fx-text-fill:#555;-fx-font-size:11px;"/>
+        <ComboBox fx:id="clientCombo" promptText="%sale.client_opt" maxWidth="1.7976931348623157E308" styleClass="combo-box"/>
+    </VBox>
+
+    <!-- Product search with autocomplete -->
+    <VBox spacing="0">
+        <HBox spacing="8" alignment="CENTER_LEFT">
+            <TextField fx:id="productSearch" promptText="%sale.search" HBox.hgrow="ALWAYS" styleClass="text-field"/>
+        </HBox>
+        <ListView fx:id="suggestionList" managed="false" visible="false" styleClass="list-view"/>
+    </VBox>
+
+    <!-- Lines table -->
+    <TableView fx:id="linesTable" VBox.vgrow="ALWAYS" minHeight="160" styleClass="table-view" style="-fx-border-color:transparent;">
+        <columns>
+            <TableColumn fx:id="colProd" text="%stock.col.name" minWidth="110"/>
+            <TableColumn fx:id="colQnt" text="%stock.col.qnt" minWidth="45"/>
+            <TableColumn fx:id="colPrix" text="%stock.col.price" minWidth="65"/>
+            <TableColumn fx:id="colTot" text="Total" minWidth="65"/>
+            <TableColumn fx:id="colDel" text="" minWidth="45" prefWidth="45"/>
+        </columns>
+        <columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/></columnResizePolicy>
+    </TableView>
+
+    <Label fx:id="lblTotal" text="%sale.total" style="-fx-font-weight:bold;-fx-text-fill:#008037;-fx-font-size:14px;"/>
+    <Label fx:id="errorLabel" textFill="RED" wrapText="true"/>
+
+    <HBox spacing="10">
+        <Button text="%btn.cancel" onAction="#handleCancel" styleClass="btn, btn-red" HBox.hgrow="ALWAYS" maxWidth="1.7976931348623157E308"/>
+        <Button text="%btn.validate" onAction="#handleSave" styleClass="btn, btn-green" HBox.hgrow="ALWAYS" maxWidth="1.7976931348623157E308"/>
+    </HBox>
+</VBox>
+</ScrollPane>

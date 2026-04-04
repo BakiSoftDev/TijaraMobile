@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.tijaramobile.controller.UsersController"
+      spacing="0" style="-fx-background-color:#f0f4f8;" fillWidth="true">
+
+    <HBox alignment="CENTER_LEFT" spacing="8" style="-fx-background-color:white;-fx-border-color:transparent transparent #e9ecef transparent;-fx-border-width:0 0 1 0;" minHeight="52">
+        <padding><Insets left="12" right="12" top="8" bottom="8"/></padding>
+        <Label text="👤 Utilisateurs" style="-fx-font-size:16px;-fx-font-weight:bold;-fx-text-fill:#2c3e50;"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="+ Ajouter" onAction="#handleAdd" styleClass="btn, btn-green"/>
+    </HBox>
+
+    <HBox spacing="8" style="-fx-background-color:white;" alignment="CENTER_LEFT">
+        <padding><Insets left="12" right="12" top="8" bottom="8"/></padding>
+        <TextField fx:id="searchField" promptText="🔍 Rechercher..." HBox.hgrow="ALWAYS" styleClass="text-field" onAction="#handleSearch"/>
+        <Button text="Chercher" onAction="#handleSearch" styleClass="btn, btn-blue"/>
+    </HBox>
+
+    <TableView fx:id="table" VBox.vgrow="ALWAYS" styleClass="table-view" style="-fx-border-color:transparent;">
+        <columns>
+            <TableColumn fx:id="colUsername" text="Username" minWidth="90"/>
+            <TableColumn fx:id="colFullName" text="Nom" minWidth="100"/>
+            <TableColumn fx:id="colEmail" text="Email" minWidth="100"/>
+            <TableColumn fx:id="colActions" text="" minWidth="80" prefWidth="80"/>
+        </columns>
+        <columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/></columnResizePolicy>
+    </TableView>
+</VBox>

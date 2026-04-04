@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.tijaramobile.controller.ProductFormController"
+      stylesheets="@../../../Img/styles.css"
+      spacing="12" style="-fx-background-color:#f0f4f8;">
+    <padding><Insets top="16" left="16" right="16" bottom="16"/></padding>
+
+    <Label fx:id="lblTitle" text="%stock.add" style="-fx-font-size:18px;-fx-font-weight:bold;-fx-text-fill:#2c3e50;"/>
+
+    <VBox spacing="10" styleClass="login-container">
+        <padding><Insets top="12" left="12" right="12" bottom="12"/></padding>
+
+        <Label text="%form.product.name" style="-fx-text-fill:#555;-fx-font-size:12px;"/>
+        <TextField fx:id="nomField" promptText="%form.product.name" styleClass="text-field"/>
+
+        <Label text="%form.product.ref" style="-fx-text-fill:#555;-fx-font-size:12px;"/>
+        <TextField fx:id="refField" promptText="%form.product.ref" styleClass="text-field"/>
+
+        <Label text="%form.product.unit" style="-fx-text-fill:#555;-fx-font-size:12px;"/>
+        <ComboBox fx:id="unitCombo" maxWidth="1.7976931348623157E308" styleClass="combo-box"/>
+
+        <HBox spacing="10">
+            <VBox HBox.hgrow="ALWAYS" spacing="4">
+                <Label text="%form.product.price_a" style="-fx-text-fill:#555;-fx-font-size:12px;"/>
+                <TextField fx:id="prixAField" promptText="0.00" styleClass="text-field"/>
+            </VBox>
+            <VBox HBox.hgrow="ALWAYS" spacing="4">
+                <Label text="%form.product.price_v" style="-fx-text-fill:#555;-fx-font-size:12px;"/>
+                <TextField fx:id="prixVField" promptText="0.00" styleClass="text-field"/>
+            </VBox>
+        </HBox>
+
+        <Label text="%form.product.qnt" style="-fx-text-fill:#555;-fx-font-size:12px;"/>
+        <TextField fx:id="qntField" promptText="0.000" styleClass="text-field"/>
+
+        <HBox spacing="10">
+            <VBox HBox.hgrow="ALWAYS" spacing="4">
+                <Label text="%form.product.pack_price" style="-fx-text-fill:#555;-fx-font-size:12px;"/>
+                <TextField fx:id="packPrixField" promptText="0.00" styleClass="text-field"/>
+            </VBox>
+            <VBox HBox.hgrow="ALWAYS" spacing="4">
+                <Label text="%form.product.pack_nb" style="-fx-text-fill:#555;-fx-font-size:12px;"/>
+                <TextField fx:id="packNbField" promptText="12" styleClass="text-field"/>
+            </VBox>
+        </HBox>
+    </VBox>
+
+    <Label fx:id="errorLabel" textFill="RED" wrapText="true"/>
+
+    <HBox spacing="10">
+        <Button text="%btn.cancel" onAction="#handleCancel" styleClass="btn, btn-red" HBox.hgrow="ALWAYS" maxWidth="1.7976931348623157E308"/>
+        <Button text="%btn.save" onAction="#handleSave" styleClass="btn, btn-green" HBox.hgrow="ALWAYS" maxWidth="1.7976931348623157E308"/>
+    </HBox>
+</VBox>

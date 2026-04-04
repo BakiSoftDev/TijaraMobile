@@ -13,6 +13,7 @@ jobs:
         uses: gluonhq/setup-graalvm@master
         with:
           graalvm: '21.0.2'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3

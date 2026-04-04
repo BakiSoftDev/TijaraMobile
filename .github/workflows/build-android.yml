@@ -9,18 +9,32 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup GraalVM manually
+      - name: Download and Setup GraalVM
         run: |
-          curl -L https://github.com/gluonhq/graal/releases/download/gluon-21.0.2/graalvm-svm-java17-darwin-gluon-21.0.2.tar.gz -o graalvm.tar.gz
+          echo "Downloading GraalVM..."
+          curl -L -o graalvm.tar.gz "https://github.com/gluonhq/graal/releases/download/gluon-21.0.2/graalvm-svm-java17-darwin-gluon-21.0.2.tar.gz"
+          
+          echo "Extracting..."
           tar -xzf graalvm.tar.gz
-          echo "GRAALVM_HOME=$PWD/graalvm-svm-java17-21.0.2" >> $GITHUB_ENV
-          echo "$PWD/graalvm-svm-java17-21.0.2/bin" >> $GITHUB_PATH
+          
+          echo "Setting up environment..."
+          ls -la
+          
+          GRAALVM_DIR=$(ls -d graalvm-svm-java* 2>/dev/null || echo "graalvm-svm-java17-21.0.2")
+          echo "GRAALVM_HOME=$PWD/$GRAALVM_DIR" >> $GITHUB_ENV
+          echo "$PWD/$GRAALVM_DIR/bin" >> $GITHUB_PATH
+
+      - name: Verify GraalVM
+        run: |
+          echo "GRAALVM_HOME: $GRAALVM_HOME"
+          $GRAALVM_HOME/bin/java -version
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
       - name: Build APK
         run: |
+          export JAVA_HOME=$GRAALVM_HOME
           mvn clean gluonfx:build gluonfx:package
 
       - name: Upload APK

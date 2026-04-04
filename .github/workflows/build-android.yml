@@ -20,7 +20,7 @@ jobs:
           echo "Setting up environment..."
           ls -la
           
-          GRAALVM_DIR=$(ls -d graalvm-svm-java* 2>/dev/null || echo "graalvm-svm-java17-21.0.2")
+          GRAALVM_DIR=$(ls -d graalvm-svm-java* 2>/dev/null || echo "graalvm-svm-java21-21.0.2")
           echo "GRAALVM_HOME=$PWD/$GRAALVM_DIR" >> $GITHUB_ENV
           echo "$PWD/$GRAALVM_DIR/bin" >> $GITHUB_PATH
 

@@ -4,10 +4,10 @@ on: [push, workflow_dispatch]
 
 jobs:
   build:
-    runs-on: macos-latest  # macOS can build Android
+    runs-on: macos-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup GraalVM
         uses: gluonhq/setup-graalvm@master
@@ -15,14 +15,14 @@ jobs:
           graalvm-version: '21.0.2'
 
       - name: Setup Android SDK
-        uses: android-actions/setup-android@v2
+        uses: android-actions/setup-android@v3
 
       - name: Build APK
         run: |
           mvn clean gluonfx:build gluonfx:package
 
       - name: Upload APK
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: tijara-apk
           path: target/gluonfx/aarch64-android/gvm/*.apk

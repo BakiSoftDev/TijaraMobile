@@ -9,11 +9,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup GraalVM
-        uses: gluonhq/setup-graalvm@master
-        with:
-          graalvm: '21.0.2'
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Setup GraalVM manually
+        run: |
+          curl -L https://github.com/gluonhq/graal/releases/download/gluon-21.0.2/graalvm-svm-java17-darwin-gluon-21.0.2.tar.gz -o graalvm.tar.gz
+          tar -xzf graalvm.tar.gz
+          echo "GRAALVM_HOME=$PWD/graalvm-svm-java17-21.0.2" >> $GITHUB_ENV
+          echo "$PWD/graalvm-svm-java17-21.0.2/bin" >> $GITHUB_PATH
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3

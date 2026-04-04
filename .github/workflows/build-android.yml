@@ -12,7 +12,7 @@ jobs:
       - name: Download and Setup GraalVM
         run: |
           echo "Downloading GraalVM..."
-          curl -L -o graalvm.tar.gz "https://github.com/gluonhq/graal/releases/download/gluon-21.0.2/graalvm-svm-java17-darwin-gluon-21.0.2.tar.gz"
+          curl -L -o graalvm.tar.gz "https://github.com/gluonhq/graal/releases/download/gluon-21.0.2/graalvm-svm-java21-darwin-gluon-21.0.2.tar.gz"
           
           echo "Extracting..."
           tar -xzf graalvm.tar.gz

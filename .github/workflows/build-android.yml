@@ -1,6 +1,9 @@
 name: Build Android APK
 
-on: [push, workflow_dispatch]
+on: 
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -9,36 +12,33 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Download and Setup GraalVM
-        run: |
-          echo "Downloading GraalVM..."
-          curl -L -o graalvm.tar.gz "https://github.com/gluonhq/graal/releases/download/gluon-21.0.2/graalvm-svm-java21-darwin-gluon-21.0.2.tar.gz"
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
           
-          echo "Extracting..."
-          tar -xzf graalvm.tar.gz
-          
-          echo "Setting up environment..."
-          ls -la
-          
-          GRAALVM_DIR=$(ls -d graalvm-svm-java* 2>/dev/null || echo "graalvm-svm-java21-21.0.2")
-          echo "GRAALVM_HOME=$PWD/$GRAALVM_DIR" >> $GITHUB_ENV
-          echo "$PWD/$GRAALVM_DIR/bin" >> $GITHUB_PATH
-
-      - name: Verify GraalVM
-        run: |
-          echo "GRAALVM_HOME: $GRAALVM_HOME"
-          $GRAALVM_HOME/bin/java -version
-
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Build APK
+      - name: Download and Setup Gluon GraalVM
+        run: |
+          curl -L -o graalvm.tar.gz "https://github.com/gluonhq/graal/releases/download/gluon-21.0.2/graalvm-svm-java21-darwin-gluon-21.0.2.tar.gz"
+          tar -xzf graalvm.tar.gz
+          GRAALVM_DIR=$(ls -d graalvm-svm-java*)
+          # For MacOS, the home is inside Contents/Home
+          echo "GRAALVM_HOME=$PWD/$GRAALVM_DIR/Contents/Home" >> $GITHUB_ENV
+          echo "$PWD/$GRAALVM_DIR/Contents/Home/bin" >> $GITHUB_PATH
+
+      - name: Build with Maven
         run: |
           export JAVA_HOME=$GRAALVM_HOME
-          mvn clean gluonfx:build gluonfx:package
+          mvn clean gluonfx:build gluonfx:package -Dgluonfx.target=android
+        env:
+          GRAALVM_HOME: ${{ env:GRAALVM_HOME }}
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: tijara-apk
+          name: TijaraMobile-Android-APK
           path: target/gluonfx/aarch64-android/gvm/*.apk

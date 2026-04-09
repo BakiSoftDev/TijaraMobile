@@ -1,41 +1,53 @@
 name: Build Android APK
 
-on: 
+on:
   push:
     branches: [ main, master ]
   workflow_dispatch:
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Java
-        uses: actions/setup-java@v4
-        with:
-          java-version: '21'
-          distribution: 'temurin'
-          
+      - name: Download and Setup Gluon GraalVM for Linux
+        run: |
+          TAG="gluon-22.1.0.1-Final"
+          FILE="graalvm-svm-java17-linux-gluon-22.1.0.1-Final.tar.gz"
+          URL="https://github.com/gluonhq/graal/releases/download/$TAG/$FILE"
+          echo "Downloading Gluon GraalVM from: $URL"
+          curl -L -o graalvm.tar.gz "$URL"
+          echo "Extracting..."
+          tar -xzf graalvm.tar.gz
+          GRAALVM_DIR=$(ls -d graalvm-svm-java17*)
+          echo "GRAALVM_HOME=$PWD/$GRAALVM_DIR" >> $GITHUB_ENV
+          echo "$PWD/$GRAALVM_DIR/bin" >> $GITHUB_PATH
+
+      - name: Verify GraalVM
+        run: |
+          echo "GRAALVM_HOME: $GRAALVM_HOME"
+          $GRAALVM_HOME/bin/java -version
+
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Download and Setup Gluon GraalVM
+      - name: Install Android NDK
         run: |
-          curl -L -o graalvm.tar.gz "https://github.com/gluonhq/graal/releases/download/gluon-21.0.2/graalvm-svm-java21-darwin-gluon-21.0.2.tar.gz"
-          tar -xzf graalvm.tar.gz
-          GRAALVM_DIR=$(ls -d graalvm-svm-java*)
-          # For MacOS, the home is inside Contents/Home
-          echo "GRAALVM_HOME=$PWD/$GRAALVM_DIR/Contents/Home" >> $GITHUB_ENV
-          echo "$PWD/$GRAALVM_DIR/Contents/Home/bin" >> $GITHUB_PATH
+          sdkmanager --install "ndk;23.1.7779620" --sdk_root=$ANDROID_SDK_ROOT
+          echo "ANDROID_NDK_HOME=$ANDROID_SDK_ROOT/ndk/23.1.7779620" >> $GITHUB_ENV
 
-      - name: Build with Maven
+      - name: Set JAVA_HOME to GraalVM
+        run: echo "JAVA_HOME=$GRAALVM_HOME" >> $GITHUB_ENV
+
+      - name: Build APK with Maven
         run: |
-          export JAVA_HOME=$GRAALVM_HOME
-          mvn clean gluonfx:build gluonfx:package -Dgluonfx.target=android
+          mvn -B clean gluonfx:build gluonfx:package
         env:
           GRAALVM_HOME: ${{ env.GRAALVM_HOME }}
+          ANDROID_NDK_HOME: ${{ env.ANDROID_NDK_HOME }}
+          JAVA_HOME: ${{ env.GRAALVM_HOME }}
 
       - name: Upload APK
         uses: actions/upload-artifact@v4

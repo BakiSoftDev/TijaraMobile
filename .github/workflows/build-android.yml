@@ -36,13 +36,13 @@ jobs:
           sdkmanager --install "ndk;23.1.7779620"
           echo "ANDROID_NDK_HOME=$ANDROID_SDK_ROOT/ndk/23.1.7779620" >> $GITHUB_ENV
 
-      - name: Patch native-image (remove unsupported ForceNoROSectionRelocations flag)
+      - name: Patch native-image (remove unsupported flag and fix CAP cache)
         run: |
           REAL_NI="$GRAALVM_HOME/bin/native-image"
           mv "$REAL_NI" "$REAL_NI.real"
           printf '%s\n' '#!/bin/bash' \
-            '# Wrapper: drops ForceNoROSectionRelocations which was removed in GraalVM 23' \
-            'ARGS=()' \
+            '# Wrapper: drops removed flag and disables CAP Cache to avoid fAVX_IFMA err' \
+            'ARGS=("-H:-UseCAPCache")' \
             'for arg in "$@"; do' \
             '    if [[ "$arg" == *"ForceNoROSectionRelocations"* ]]; then' \
             '        echo "[native-image-wrapper] Dropping unsupported flag: $arg" >&2' \

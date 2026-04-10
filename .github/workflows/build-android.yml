@@ -44,10 +44,23 @@ jobs:
           sdkmanager --install "ndk;23.1.7779620"
           echo "ANDROID_NDK_HOME=$ANDROID_SDK_ROOT/ndk/23.1.7779620" >> $GITHUB_ENV
 
+      - name: Debug Environment
+        run: |
+          echo "=== GraalVM version ==="
+          $GRAALVM_HOME/bin/java -version
+          echo "=== native-image present? ==="
+          ls $GRAALVM_HOME/bin/native-image || echo "NOT FOUND"
+          echo "=== Maven version ==="
+          mvn -version
+          echo "=== ANDROID_NDK_HOME ==="
+          echo $ANDROID_NDK_HOME
+        env:
+          JAVA_TOOL_OPTIONS: "-XX:-UseContainerSupport"
+
       - name: Build APK with Maven
         run: |
           export JAVA_HOME=$GRAALVM_HOME
-          mvn -B clean gluonfx:build gluonfx:package
+          mvn -e -B clean gluonfx:build gluonfx:package
         env:
           GRAALVM_HOME: ${{ env.GRAALVM_HOME }}
           ANDROID_NDK_HOME: ${{ env.ANDROID_NDK_HOME }}

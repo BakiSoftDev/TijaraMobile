@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: macos-13  # Intel x86_64 - avoids cgroup v2 crash in old GraalVM
+    runs-on: macos-14  # ARM M1 - available on free tier
 
     steps:
       - uses: actions/checkout@v4
@@ -21,13 +21,13 @@ jobs:
       - name: Verify Maven version
         run: mvn -version
 
-      - name: Download and Setup Gluon GraalVM for macOS (Intel)
+      - name: Download and Setup Gluon GraalVM for macOS (ARM M1)
         run: |
-          URL="https://github.com/gluonhq/graal/releases/download/gluon-22.1.0.1-Final/graalvm-svm-java17-darwin-gluon-22.1.0.1-Final.tar.gz"
-          echo "Downloading Gluon GraalVM (macOS Intel)..."
+          URL="https://github.com/gluonhq/graal/releases/download/gluon-22.1.0.1-Final/graalvm-svm-java17-darwin-m1-gluon-22.1.0.1-Final.tar.gz"
+          echo "Downloading Gluon GraalVM (macOS ARM M1)..."
           curl -L -o graalvm.tar.gz "$URL"
           tar -xzf graalvm.tar.gz
-          GRAALVM_DIR=$(ls -d graalvm-svm-java17-darwin-gluon*)
+          GRAALVM_DIR=$(ls -d graalvm-svm-java17-darwin-m1*)
           # On macOS the JAVA_HOME is inside Contents/Home
           echo "GRAALVM_HOME=$PWD/$GRAALVM_DIR/Contents/Home" >> $GITHUB_ENV
           echo "$PWD/$GRAALVM_DIR/Contents/Home/bin" >> $GITHUB_PATH

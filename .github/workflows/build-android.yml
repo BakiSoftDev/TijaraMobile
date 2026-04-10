@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: macos-14  # ARM M1 - available on free tier
+    runs-on: ubuntu-latest  # Linux x86_64 - only host that supports Android cross-compile
 
     steps:
       - uses: actions/checkout@v4
@@ -18,23 +18,21 @@ jobs:
           tar -xzf maven.tar.gz
           echo "$PWD/apache-maven-3.8.8/bin" >> $GITHUB_PATH
 
-      - name: Verify Maven version
-        run: mvn -version
-
-      - name: Download and Setup Gluon GraalVM for macOS (ARM M1)
+      - name: Download and Setup Gluon GraalVM for Linux
         run: |
-          URL="https://github.com/gluonhq/graal/releases/download/gluon-22.1.0.1-Final/graalvm-svm-java17-darwin-m1-gluon-22.1.0.1-Final.tar.gz"
-          echo "Downloading Gluon GraalVM (macOS ARM M1)..."
+          URL="https://github.com/gluonhq/graal/releases/download/gluon-22.1.0.1-Final/graalvm-svm-java17-linux-gluon-22.1.0.1-Final.tar.gz"
+          echo "Downloading Gluon GraalVM (Linux x86_64)..."
           curl -L -o graalvm.tar.gz "$URL"
           tar -xzf graalvm.tar.gz
-          GRAALVM_DIR=$(ls -d graalvm-svm-java17-darwin-m1*)
-          # On macOS the JAVA_HOME is inside Contents/Home
-          echo "GRAALVM_HOME=$PWD/$GRAALVM_DIR/Contents/Home" >> $GITHUB_ENV
-          echo "$PWD/$GRAALVM_DIR/Contents/Home/bin" >> $GITHUB_PATH
+          GRAALVM_DIR=$(ls -d graalvm-svm-java17-linux*)
+          echo "GRAALVM_HOME=$PWD/$GRAALVM_DIR" >> $GITHUB_ENV
+          echo "$PWD/$GRAALVM_DIR/bin" >> $GITHUB_PATH
 
       - name: Verify GraalVM
         run: |
           echo "GRAALVM_HOME: $GRAALVM_HOME"
+          # Disable container cgroup detection to avoid NPE in GraalVM 22.1 on cgroup v2
+          export JAVA_TOOL_OPTIONS="-XX:-UseContainerSupport"
           $GRAALVM_HOME/bin/java -version
 
       - name: Setup Android SDK
@@ -52,6 +50,8 @@ jobs:
         env:
           GRAALVM_HOME: ${{ env.GRAALVM_HOME }}
           ANDROID_NDK_HOME: ${{ env.ANDROID_NDK_HOME }}
+          # Disable cgroup v2 container detection that crashes GraalVM 22.1 on GitHub runners
+          JAVA_TOOL_OPTIONS: "-XX:-UseContainerSupport"
 
       - name: Upload APK
         uses: actions/upload-artifact@v4

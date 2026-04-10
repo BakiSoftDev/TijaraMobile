@@ -7,33 +7,30 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: macos-13  # Intel x86_64 - avoids cgroup v2 crash in old GraalVM
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Maven 3.8.8 (required by GluonFX plugin)
+      - name: Install Maven 3.8.8 (required by GluonFX plugin 1.0.22)
         run: |
           curl -L -o maven.tar.gz https://archive.apache.org/dist/maven/maven-3/3.8.8/binaries/apache-maven-3.8.8-bin.tar.gz
           tar -xzf maven.tar.gz
           echo "$PWD/apache-maven-3.8.8/bin" >> $GITHUB_PATH
-          echo "MAVEN_HOME=$PWD/apache-maven-3.8.8" >> $GITHUB_ENV
 
       - name: Verify Maven version
         run: mvn -version
 
-      - name: Download and Setup Gluon GraalVM for Linux
+      - name: Download and Setup Gluon GraalVM for macOS (Intel)
         run: |
-          TAG="gluon-22.1.0.1-Final"
-          FILE="graalvm-svm-java17-linux-gluon-22.1.0.1-Final.tar.gz"
-          URL="https://github.com/gluonhq/graal/releases/download/$TAG/$FILE"
-          echo "Downloading Gluon GraalVM from: $URL"
+          URL="https://github.com/gluonhq/graal/releases/download/gluon-22.1.0.1-Final/graalvm-svm-java17-darwin-gluon-22.1.0.1-Final.tar.gz"
+          echo "Downloading Gluon GraalVM (macOS Intel)..."
           curl -L -o graalvm.tar.gz "$URL"
-          echo "Extracting..."
           tar -xzf graalvm.tar.gz
-          GRAALVM_DIR=$(ls -d graalvm-svm-java17*)
-          echo "GRAALVM_HOME=$PWD/$GRAALVM_DIR" >> $GITHUB_ENV
-          echo "$PWD/$GRAALVM_DIR/bin" >> $GITHUB_PATH
+          GRAALVM_DIR=$(ls -d graalvm-svm-java17-darwin-gluon*)
+          # On macOS the JAVA_HOME is inside Contents/Home
+          echo "GRAALVM_HOME=$PWD/$GRAALVM_DIR/Contents/Home" >> $GITHUB_ENV
+          echo "$PWD/$GRAALVM_DIR/Contents/Home/bin" >> $GITHUB_PATH
 
       - name: Verify GraalVM
         run: |
@@ -45,7 +42,7 @@ jobs:
 
       - name: Install Android NDK
         run: |
-          sdkmanager --install "ndk;23.1.7779620" --sdk_root=$ANDROID_SDK_ROOT
+          sdkmanager --install "ndk;23.1.7779620"
           echo "ANDROID_NDK_HOME=$ANDROID_SDK_ROOT/ndk/23.1.7779620" >> $GITHUB_ENV
 
       - name: Build APK with Maven
